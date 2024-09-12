@@ -1,0 +1,146 @@
+
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="" rel="stylesheet">
+</head>
+<body>
+
+
+<div class="container-fluid ">
+  <div class="row flex-nowrap">
+    <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0">
+      <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+        <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none"><span class="fs-5 d-none d-sm-inline">Menu</span></a>
+        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+          <!---->
+          <li><a href=""><Strong>Espace Bailleurs</Strong> </a></li>
+          <li><a href="">Annonce </a>
+            <ul>
+              <li><a href="/ad-creation">Nouvelle annonce</a></li>
+              <li><a href="/my-ads">Mes annonces</a></li>
+              <li><a href="">Réservations</a></li> <!-- Calendrier de reservations -->
+            </ul>
+          </li>
+
+          <li><a href="">Factures</a>
+            <ul>
+              <li><a href="">Liste</a></li>
+              <li><a href="">Recap. financiers</a></li>
+            </ul>
+          </li>
+
+          <li><a href="">Abonnement</a></li>
+          <li><a href="">Prestations</a> <!--Service/Prestation -->
+            <ul>
+              <li><a href="">Suivi</a></li>
+              <li><a href="">Interventions</a></li> <!--Fiche d'interventions-->
+            </ul>
+          </li>
+          <li><a href="">Deconnexion</a></li>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="mt-5 mb-5 grid-container">
+
+
+
+
+    </div>
+
+
+
+
+  </div>
+</div>
+
+
+
+</body>
+</html>
+
+
+
+<!--
+<strong>Nouvelle annonce</strong>
+<div class="container d-flex justify-content-center">
+  <div class="mt-1 row justify-content-center">
+  </div>
+
+  <form [formGroup]="adForm" novalidate>
+
+    <div class="d-flex" >
+      <div style="margin-bottom: 4%;margin-right: 1%" class="form-group col-sm-6 mr-2">
+        <label for="type" class="form-label">Type</label>
+        <select formControlName="type" id="type" class="form-select form-select-sm">
+          <option selected></option>
+          <option value="Apart">Appartement</option>
+          <option value="Home">Maison</option>
+          <option value="Studio">Studio</option>
+        </select>
+        <div style="font-size: 80%;color: red" *ngIf="this.adForm.get('type')?.errors">Choisir le type de propriété</div>
+      </div>
+
+      <div  class=" form-group col-sm-6" >
+        <label for="area" class="form-label">Surface</label>
+        <input id="area" type="text" placeholder="Surface" formControlName="area" class="form-control form-control-sm" required/>
+        <div style="font-size: 80%;color: red" *ngIf="this.adForm.get('area')?.errors">Saisir la surface</div>
+      </div>
+    </div>
+
+    <div class="d-inline-flex">
+      <div style="margin-bottom: 4%;margin-right: 1%" class="form-group col-sm-6">
+        <label for="pieces" class="form-label">Nombre de pieces</label>
+        <input id="pieces" type="number" placeholder="Pieces" formControlName="pieces" class="form-control form-control-sm" required/>
+        <div style="font-size: 80%;color: red" *ngIf="this.adForm.get('pieces')?.errors">Saisir le nombre de  pieces</div>
+      </div>
+      <div class="form-group col-sm-6">
+        <label for="rent" class="form-label">Loyer</label>
+        <input id="rent" type="rent" placeholder="Loyer" formControlName="rent" class="form-control form-control-sm" required/>
+        <div style="font-size: 80%;color: red" *ngIf="this.adForm.get('rent')?.errors">Saisir le loyer</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 4%" class="form-group col-sm-12">
+      <label for="description" class="form-label">Description</label>
+      <textarea class="form-control form-control-sm" formControlName="description" id="description"  rows="3" required></textarea>
+      <div style="font-size: 80%;color: red" *ngIf="this.adForm.get('description')?.errors">Saisir la description </div>
+    </div>
+
+
+    <div style="margin-bottom: 4%" class="d-inline-flex ma">
+
+      <div style="margin-right: 1%" class="form-group col-sm-6">
+        <label for="street" class="form-label">Rue</label>
+        <input id="street" type="text" placeholder="Street" formControlName="street" class="form-control form-control-sm" required/>
+        <div style="font-size: 80%;color: red" *ngIf="this.adForm.get('street')?.errors">Entrer le numero & la Rue/Bld/Av.</div>
+      </div>
+
+      <div style="margin-right: 1%" class="form-group col-sm-4">
+        <label for="city" class="form-label">Ville</label>
+        <input id="city" type="text" placeholder="Ville" formControlName="city" class="form-control form-control-sm" required/>
+        <div style="font-size: 80%;color: red" *ngIf="this.adForm.get('city')?.errors">Saisir la ville</div>
+      </div>
+
+      <div class="form-group col-sm-4">
+        <label for="zip" class="form-label">Code postal</label>
+        <input id="zip" type="text" placeholder="Code postal" formControlName="zip" class="form-control form-control-sm" required/>
+        <div style="font-size: 80%;color: red" *ngIf="this.adForm.get('zip')?.errors">Saisir le code postal</div>
+      </div>
+    </div>
+
+    <div>
+      <button type="submit" (click)="onSubmit()" class="btn btn-primary mb-3 btn-sm" [disabled]="!adForm.valid" >Envoyer</button>
+    </div>
+  </form>
+</div>
+
+
+<div *ngIf="this.adFormSubmitted">
+  <div>Formulaire valider</div>
+</div>-->
+

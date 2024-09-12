@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="" rel="stylesheet">
+</head>
+<body>
+
+
+<div class="container-fluid ">
+  <div class="row flex-nowrap">
+    <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0">
+      <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+        <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none"><span class="fs-5 d-none d-sm-inline">Menu</span></a>
+        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+          <!---->
+          <li><a href=""><Strong>Espace Bailleurs</Strong> </a></li>
+          <li><a href="">Annonce</a>
+            <ul>
+              <li><a href="/ad-creation">Nouvelle annonce</a></li>
+              <li><a href="/my-ads">Mes annonces</a></li>
+              <li><a href="">Réservations</a></li> <!-- Calendrier de reservations -->
+            </ul>
+          </li>
+
+          <li><a href="">Factures</a>
+            <ul>
+              <li><a href="">Liste</a></li>
+              <li><a href="">Recap. financiers</a></li>
+            </ul>
+          </li>
+
+          <li><a href="">Abonnement</a></li>
+          <li><a href="">Prestations</a> <!--Service/Prestation -->
+            <ul>
+              <li><a href="">Suivi</a></li>
+              <li><a href="">Interventions</a></li> <!--Fiche d'interventions-->
+            </ul>
+          </li>
+          <li><a href="">Deconnexion</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-5 mb-5 grid-container" >
+      <div class="grid-box" *ngFor="let property of myProperties">
+        <!--Card-->
+        <a style="text-decoration:none"  [routerLink]="['/details']" [queryParams]="{ id:property.id}">
+          <div class="card" style="border: none">
+            <img class="img-fluid img-thumbnail" src="../../../assets/Capture_2023.png" style="height: 171px;width:fit-content;">
+            <div class="card-body">
+              <h6 class="card-title text-dark-emphasis">{{property.type}}</h6>
+              <span>{{property.rent}} €</span>
+              <p class="card-text text-dark-emphasis">
+                <span>{{property.pieces}} pièces</span>
+                <span>{{property.area}}</span>
+                <span>{{property.address?.city}}</span>
+              </p>
+              <a href="#">Voir details</a>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+
+</div>
+</div>
+
+
+</body>
+</html>
+
+

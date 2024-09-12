@@ -1,0 +1,7 @@
+#booking-tab{
+  width:10%;
+}
+
+#book-tab tr ,td,th{
+  border:1px solid #ddd;
+}

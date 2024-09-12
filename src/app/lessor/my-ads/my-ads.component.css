@@ -1,0 +1,10 @@
+.grid-container{
+  display: grid;
+  grid-template-columns: 18% 18% 18% 18%;
+  grid-template-rows: 28% 28% 28%;
+  gap: 3%;
+}
+
+.grid-box{
+  height: 100%;
+}
