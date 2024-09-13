@@ -1,10 +1,9 @@
-import { Status} from "../model/status";
+import { Status} from "./status";
 
-export class DeliveryReqDto {
+export class DeliveryReq {
   constructor(
     public id?: string,
     public userId?: string,
-    private propertyId?: string,
     public type?: string,
     public  Status?: Status,
     public createdAt?: Date,
