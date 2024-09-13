@@ -5,3 +5,8 @@
 #book-tab tr ,td,th{
   border:1px solid #ddd;
 }
+
+.disabled{
+  pointer-events: none;
+  opacity: 0.6;
+}

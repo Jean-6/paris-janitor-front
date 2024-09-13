@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PropertyService} from "../../services/property.service";
 import {ImageService} from "../../services/image.service";
 import {Property} from "../../model/property";
-import {ActivatedRoute, Route, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {DeliveryService} from "../../services/delivery.service";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Delivery} from "../../model/delivery";
@@ -27,6 +27,7 @@ export class DetailsComponent implements OnInit,OnDestroy {
   dayOfWeek:string[]=["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"]
   morningHour:string[]=["8h00","9h00","10h00","11h00"]
   afternoonHour:string[]=["14h00","15h00","16h00","17h00"]
+  test:string[]=[]
 
 
   constructor(private propertyService:PropertyService,
@@ -38,6 +39,7 @@ export class DetailsComponent implements OnInit,OnDestroy {
               private calendarService:CalendarService) {}
 
   ngOnInit(): void {
+    this.disableOtherCheckBoxes()
     console.log("###")
 
     const year = new Date().getFullYear();
@@ -59,10 +61,10 @@ export class DetailsComponent implements OnInit,OnDestroy {
 
       });
 
-    this.bookingDateForm = this.formBuilder.group(
-      {
-        bookings: new FormArray([])
-      });
+    this.bookingDateForm = this.formBuilder.group({
+    dayOfWeek: this.formBuilder.array([])//new FormArray([])
+    });
+    //this.test.forEach(()=>this.testArray.push())
 
     this.getAllDelivery();
     this.router.queryParams
@@ -74,6 +76,10 @@ export class DetailsComponent implements OnInit,OnDestroy {
         (err)=>{},
         ()=>this.isLoading=true
       )
+  }
+
+  getBookingsArray() {
+    return this.bookingDateForm.get('') as FormArray;
   }
 
 
@@ -114,7 +120,14 @@ export class DetailsComponent implements OnInit,OnDestroy {
   }
 
   onSubmitBookingDate(){
-    console.log(this.bookingDateForm.value)
+    //Si aucun creneau reserve , afficher message
+    //Si le choix coches , desactive tous les autres choix
+
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    //console.log(checkboxes)
+    checkboxes.forEach(c=>{
+      console.log(c.getAttribute("name"))
+    })
   }
 
   prev() {
@@ -129,5 +142,17 @@ export class DetailsComponent implements OnInit,OnDestroy {
 
   ngOnDestroy(): void {}
 
-
+  disableOtherCheckBoxes(){
+    let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    let checkboxChecked = document.querySelector('input[type="checkbox"]:checked');
+    checkboxes.forEach(checkbox=>{
+      if(!checkboxChecked){
+        checkbox.classList.remove('disabled')
+      }else{
+        if(checkbox!=checkboxChecked) checkbox.className='disabled'
+      }
+    });
+  }
+  onCheckBoxesChange(){}
+  resetCheckBoxes(){}
 }
