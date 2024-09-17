@@ -1,0 +1,40 @@
+
+
+<div class=" container center-div ">
+  <h3>Se connecter Ou <span><a class="link text-decoration-none" href="/signup">Ouvrir un compte</a></span></h3>
+</div>
+
+
+<div class="container center-div mt-4 mb-5">
+  <form [formGroup]="signinForm">
+    <div class=" form-group col-sm-2 mb-2">
+      <label for="pseudo" class="form-label">Pseudo</label>
+      <input id="pseudo" type="text" placeholder="Username" formControlName="username" class="form-control form-control-sm"/>
+      <div class="form-error-message" *ngIf="this.signinForm.get('username')?.touched && (this.signinForm.get('username')?.errors || this.signinForm.get('username')?.invalid )">
+        <span>Entrer un login</span>
+      </div>
+    </div>
+
+
+    <div class="form-group col-sm-2 mb-4">
+      <label for="password" class="form-label">Mot de passe</label>
+      <input id="password" type="password" placeholder="Password" formControlName="password" class="form-control form-control-sm"/>
+      <div class="form-error-message" *ngIf="this.signinForm.get('password')?.touched && (this.signinForm.get('password')?.errors || this.signinForm.get('password')?.invalid )">
+        <span>Entrer le mot de passe</span>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <div><button type="submit" (click)="onSubmit()" class="btn btn-primary mb-3 btn-sm" [disabled]="!signinForm.valid">Se connecter</button></div>
+    </div>
+    <div><a class="link text-decoration-none" href="/password">Mot de passe oublié</a></div>
+  </form>
+
+</div>
+
+<div>
+  <a class="link text-decoration-none" href="/lessor">Compte bailleurs</a> |
+  <a class="link text-decoration-none" href="/providers">Compte Fournisseurs</a> |
+  <a class="link text-decoration-none" href="/travelers">Compte voyageurs</a>
+</div>
