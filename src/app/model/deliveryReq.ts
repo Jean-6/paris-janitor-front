@@ -2,10 +2,10 @@ import { Status} from "./status";
 
 export class DeliveryReq {
   constructor(
-    public id?: string,
     public userId?: string,
+    public propertyId?: string,
     public type?: string,
-    public  Status?: Status,
+    public  status?: Status,
     public createdAt?: Date,
   ) { }
 }
