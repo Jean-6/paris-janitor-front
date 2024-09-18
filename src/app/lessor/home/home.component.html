@@ -1,0 +1,29 @@
+<app-aside></app-aside>
+
+<div class="container-fluid mt-4 " style="margin-left: 13%;margin-bottom:10%;width: 1100px">
+  <h3>Les annonces du moment</h3>
+  <div class="mt-4 grid-container" >
+    <div class="grid-box" *ngFor="let property of properties">
+      <a style="text-decoration:none"  [routerLink]="['/details']" [queryParams]="{ id:property.id}">
+        <div class="card" style="width: 17rem;">
+          <img class="card-img-top" height="180" width="100" src="../../../assets/5551029-logo-immobilier.jpg" alt="card img cap">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="container ">
+      a
+    </div>
+  </div>
+
+
+
+</div>
+
+
+

@@ -1,11 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ImageService} from "../../services/image.service";
-import {NotifierService} from "angular-notifier";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {ErrorHandlerService} from "../../services/error-handler.service";
 import {PropertyService} from "../../services/property.service";
-import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Component({
   selector: 'app-ad-creation',

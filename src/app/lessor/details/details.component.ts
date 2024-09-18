@@ -5,9 +5,11 @@ import {Property} from "../../model/property";
 import {ActivatedRoute} from "@angular/router";
 import {DeliveryService} from "../../services/delivery.service";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Delivery} from "../../model/delivery";
 import {DeliveryReqService} from "../delivery-req/delivery-req.service";
 import {CalendarService} from "../../services/calendar.service";
+import {BookingService} from "../../services/booking.service";
+import {DeliveryDto} from "../../dto/deliveryDto";
+import {Status} from "../../model/status";
 
 @Component({
   selector: 'app-details',
@@ -19,24 +21,35 @@ export class DetailsComponent implements OnInit,OnDestroy {
   isLoading:boolean = false;
   isLoadingDeliveries = false;
 
+  isLoadingBooking = false;
+  isSaveBooking = false;
+
+  propertyId!: string ;
+
   propDetails:Property=new Property();
   deliveryReqForm!:FormGroup;
   bookingDateForm!:FormGroup;
-  deliveries:Delivery[]=[];
+  deliveries:DeliveryDto[]=[];
+
+  requestStatus!: Status ;//= Status.PENDING;
 
   dayOfWeek:string[]=["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"]
   morningHour:string[]=["8h00","9h00","10h00","11h00"]
   afternoonHour:string[]=["14h00","15h00","16h00","17h00"]
-  test:string[]=[]
+
+  private userId:string="66d5f19a64eebd353b503c85";
 
 
   constructor(private propertyService:PropertyService,
               private imageService:ImageService,
               private router:ActivatedRoute,
               private deliveryService: DeliveryService,
-              private delReqService: DeliveryReqService,
+              private deliveryRequestService: DeliveryReqService,
               private formBuilder: FormBuilder,
-              private calendarService:CalendarService) {}
+              private calendarService:CalendarService,
+              private bookingService:BookingService) {}
+
+  private weekDates = this.calendarService.getWeekDates(2024,37);
 
   ngOnInit(): void {
     this.disableOtherCheckBoxes()
@@ -46,7 +59,7 @@ export class DetailsComponent implements OnInit,OnDestroy {
     console.log("full year : "+year)
     const weekNumber = this.calendarService.getWeekNumber(new Date());
     console.log("week number : "+weekNumber)
-    const daysWeek = this.calendarService.getWeekDates(2024,37);
+    const daysWeek = this.weekDates;
 
     console.log(daysWeek);
 
@@ -62,14 +75,14 @@ export class DetailsComponent implements OnInit,OnDestroy {
       });
 
     this.bookingDateForm = this.formBuilder.group({
-    dayOfWeek: this.formBuilder.array([])//new FormArray([])
+    dayOfWeek: this.formBuilder.array([])
     });
-    //this.test.forEach(()=>this.testArray.push())
 
     this.getAllDelivery();
     this.router.queryParams
       .subscribe(
         (params) => {
+          this.propertyId = params["id"];
           console.log("Details id :"+params["id"]);
           this.getData(params["id"]);
           },
@@ -105,9 +118,21 @@ export class DetailsComponent implements OnInit,OnDestroy {
       )
   }
 
-  onSubmit(){
-    console.log(this.deliveryReqForm.value)
-    this.delReqService.saveData(this.deliveryReqForm.value)
+  /*saveBookingData(){
+public userId?: string,
+    private propertyId?: string,
+    public type?: string,
+    public  status?: Status,
+    public createdAt?: Date,
+  }*/
+
+  onSubmitDeliveryReq(){
+    console.log("PropertyId : "+this.propertyId);
+    console.log("type :"+this.deliveryReqForm.value["type"])
+    console.log("description :"+this.deliveryReqForm.value["description"])
+    this.deliveryRequestService.saveDeliveryRequest(
+      this.propertyId,
+      this.deliveryReqForm.value)
       .subscribe({
         next: (res) => {
           console.log()
@@ -121,23 +146,31 @@ export class DetailsComponent implements OnInit,OnDestroy {
 
   onSubmitBookingDate(){
     //Si aucun creneau reserve , afficher message
-    //Si le choix coches , desactive tous les autres choix
+    const checkbox = document.querySelector('input[type="checkbox"]:checked');
 
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    this.bookingService.saveData({}).subscribe(
+      (res)=>{},
+      (err:any)=>{},
+      ()=>this.isSaveBooking = true)
+    //booking
     //console.log(checkboxes)
-    checkboxes.forEach(c=>{
+    /*checkboxes.forEach(c=>{
       console.log(c.getAttribute("name"))
-    })
+    })*/
+
   }
 
   prev() {
 
     const prevBtn =document.getElementById("prevBtn");
+    alert("prev")
 
   }
 
   next(){
     const nextBtn =document.getElementById("nextBtn");
+    alert("next")
+
   }
 
   ngOnDestroy(): void {}
