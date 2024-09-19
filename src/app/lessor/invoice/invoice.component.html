@@ -1,0 +1,67 @@
+<app-aside></app-aside>
+<div class="container-fluid mt-4 " style="margin-left: 13%;margin-bottom:10%;width: 1100px">
+  <h3>Mes factures</h3>
+  <div class="mt-4">
+    <form  novalidate> <!-- [formGroup]-->
+      <div class="d-flex mb-2" >
+
+        <div  class=" form-group col-sm-6 mx-2" >
+          <label for="status" class="form-label">Status</label>
+          <select  id="status" class="form-select form-select-sm">
+            <option selected></option>
+            <option value="Apart">En attente</option>
+            <option value="Home">En cours</option>
+            <option value="Studio">Terminée</option>
+          </select>
+        </div>
+      </div>
+
+      <div class=" form-group col-sm-12 d-flex">
+        <div class=" form-group ">
+          <label for="startDate" class="form-label">Du</label>
+          <p-calendar placeholder="Date de debut" class="form-control-lg fs-6" id="startDate" dateFormat="dd.mm.yy" [readonlyInput]="true" />
+        </div>
+        <div class=" form-group">
+          <label for="endDate" class="form-label">Au</label>
+          <p-calendar placeholder="Date de fin" class="form-control-lg fs-6" id="endDate" dateFormat="dd.mm.yy"  [readonlyInput]="true" />
+        </div>
+      </div>
+
+
+      <div class="form-group col-sm-6 mx-2 mt-2">
+        <button type="submit"  class="btn btn-primary mb-3 btn-sm"  >Rechercher</button> <!--[disabled]=""-->
+      </div>
+    </form>
+  </div>
+
+  <div class="spinner-border"></div>
+
+  <div class="mt-4">
+
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Handle</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td colspan="2">Larry the Bird</td>
+        <td>@twitter</td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
