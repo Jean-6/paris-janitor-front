@@ -2,11 +2,11 @@
 <div class="container-fluid mt-4 " style="margin-left: 13%;margin-bottom:10%;width: 1100px">
   <h3>Suivi des prestations</h3>
   <div class="mt-4">
-      <form [formGroup]="adForm" novalidate>
+      <form >
         <div class="d-flex mb-2" >
           <div class="form-group col-sm-6 ">
             <label for="type" class="form-label">Type</label>
-            <select formControlName="type" id="type" class="form-select form-select-sm">
+            <select  id="type" class="form-select form-select-sm fs-6" [(ngModel)]="deliveryRequestService.delivReqSearch.type" name="type" >
               <option selected></option>
               <option value="Apart">Appartement</option>
               <option value="Home">Maison</option>
@@ -14,9 +14,9 @@
             </select>
           </div>
 
-          <div  class=" form-group col-sm-6 mx-2" >
+          <div class="form-group col-sm-6 mx-2" >
             <label for="status" class="form-label">Status</label>
-            <select formControlName="type" id="status" class="form-select form-select-sm">
+            <select  id="status" class="form-select form-select-sm fs-6">
               <option selected></option>
               <option value="Apart">En attente</option>
               <option value="Home">En cours</option>
@@ -25,23 +25,24 @@
           </div>
         </div>
 
-        <div  class=" form-group col-sm-6 mx-2 mb-2" >
-          <label for="requestDate" class="form-label">Date de demande</label>
-
-
-          <div>
-            <span>Du</span>
-            <input id="requestDate" type="date" class="" />
-            <span>Au</span>
-            <input id="requestDate" type="date" class="" />
+        <div class="form-group col-sm-12 d-flex">
+          <div class=" form-group ">
+            <label for="requestStartDate" class="form-label">Du</label>
+            <p-calendar class="form-control-lg fs-6" id="requestStartDate" placeholder="Date de debut"  dateFormat="dd.mm.yy" [readonlyInput]="true" [(ngModel)]="deliveryRequestService.delivReqSearch.startDate" name="startDate" />
+          </div>
+          <div class=" form-group">
+            <label for="requestEndDate" class="form-label">Au</label>
+            <p-calendar class="form-control-lg fs-6" id="requestEndDate" placeholder="Date de fin" dateFormat="dd.mm.yy"  [readonlyInput]="true" [(ngModel)]="deliveryRequestService.delivReqSearch.endDate" name="endDate" />
           </div>
         </div>
 
-        <div>
-          <button type="submit"  class="btn btn-primary mb-3 btn-sm" [disabled]="!adForm.valid" >Rechercher</button>
+        <div class="form-group col-sm-6 mt-2">
+          <button type="submit"  class="btn btn-primary mb-3 btn-sm" (submit)="deliveryRequestService.searchForService()" >Rechercher</button>
         </div>
     </form>
   </div>
+
+  <div class="spinner-border"></div>
 
   <div class="mt-4">
 
