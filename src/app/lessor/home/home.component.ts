@@ -20,12 +20,14 @@ export class HomeComponent implements OnInit,OnDestroy{
   private userId:string="66d5f19a64eebd353b503c85";
 
   constructor(
-              private propertyService: PropertyService,
+              public propertyService: PropertyService,
               private imageService: ImageService) {}
 
   ngOnInit() {
 
-    this.getAllProperties();
+    //this.getAllProperties();
+    this.getPropertiesPerPage();
+
     this.propertyService.getPropertiesByUserId(this.userId).pipe(
       switchMap(props => {
         const ids = props.map((obj: { id: any; }) =>obj.id);
@@ -63,6 +65,23 @@ export class HomeComponent implements OnInit,OnDestroy{
         },
       );
   }
+
+  getPropertiesPerPage() {
+    this.propertyService.getPropertiesPerPage().subscribe(
+      (res) =>{
+        this.properties = res.content;
+        //this.propertyIds=this.properties.map(item=>item.id);
+      },
+      (error)=> {
+        console.error('Error fetching data:',error);
+        this.properties=[]
+      },
+      ()=> {
+        this.isLoadingProperties = true;
+      },
+    );
+  }
+
 
   getImagesByPropertyId(propIds:string[]){
     this.imageService.fetchImagesMeta(propIds).subscribe(

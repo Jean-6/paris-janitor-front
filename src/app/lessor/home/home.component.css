@@ -1,7 +1,7 @@
 .grid-container{
   display: grid;
-  grid-template-columns: 18% 18% 18% 18% ;
-  grid-template-rows: 7% 7% 7% 7% 7% 7% ;
+  grid-template-columns: 18% 18% 18% 18%;
+  /*grid-template-rows:;*/
   gap: 9%;
 }
 
