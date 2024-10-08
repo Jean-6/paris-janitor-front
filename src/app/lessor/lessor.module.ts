@@ -11,12 +11,15 @@ import {AsideComponent} from "./aside/aside.component";
 import { InvoiceComponent } from './invoice/invoice.component';
 import {CalendarModule} from "primeng/calendar";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
+import { BookingComponent } from './booking/booking.component';
 
 
 
 export const clientLessorRoutes: Routes = [
   { path: 'lessor', component: HomeComponent, children: [] },
   { path: 'ad-creation', component:AdCreationComponent},
+  { path: 'booking-list', component:BookingComponent},
   { path: 'details', component:DetailsComponent}, //details/:id
   { path: 'my-ads',component:MyAdsComponent},
   { path: 'delivery-request',component:DeliveryReqComponent},
@@ -32,16 +35,14 @@ export const clientLessorRoutes: Routes = [
     MyAdsComponent,
     DeliveryReqComponent,
     AsideComponent,
-    InvoiceComponent
+    InvoiceComponent,
+    BookingComponent
   ],
   imports: [
     CommonModule, RouterModule.forChild(clientLessorRoutes), FormsModule,
-    ReactiveFormsModule, CalendarModule,BrowserAnimationsModule
+    ReactiveFormsModule, CalendarModule, BrowserAnimationsModule, ProgressSpinnerModule
   ],
-  providers:[
-
-
-  ],
+  providers:[],
   exports:[RouterModule]
 })
 export class LessorModule { }

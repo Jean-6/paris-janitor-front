@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,7 +11,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {SigninService} from "./signin/signin.service";
 import {SignupService} from "./signup/signup.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {CommonModule} from "@angular/common";
+import {CommonModule, DatePipe} from "@angular/common";
 import {ErrorHandlerService} from "./services/error-handler.service";
 import {ProvidersModule} from "./providers/providers.module";
 import { HomeComponent } from './travelers/home/home.component';
@@ -19,7 +19,8 @@ import {TravelersModule} from "./travelers/travelers.module";
 import {LessorModule} from "./lessor/lessor.module";
 import {PropertyService} from "./services/property.service";
 import {ImageService} from "./services/image.service";
-import { AsideComponent } from './aside/aside.component';
+
+import {AdminModule} from "./admin/admin.module";
 
 @NgModule({
   declarations: [
@@ -27,8 +28,11 @@ import { AsideComponent } from './aside/aside.component';
     SignupComponent,
     SigninComponent,
     PasswordComponent,
-    HomeComponent,
-    AsideComponent,
+    //HomeComponent,
+    //HomeComponent,
+    //HomeComponent,
+
+
   ],
   imports: [
     BrowserModule,
@@ -41,7 +45,8 @@ import { AsideComponent } from './aside/aside.component';
     CommonModule,
     ProvidersModule,
     TravelersModule,
-    LessorModule
+    LessorModule,
+    AdminModule
   ],
   providers: [
     SigninService,
@@ -50,10 +55,10 @@ import { AsideComponent } from './aside/aside.component';
     ErrorHandlerService,
     PropertyService,
     ImageService,
-    //DeliveryReqService
+    { provide: LOCALE_ID, useValue: 'fr-FR' },
+    DatePipe
   ],
   exports: [
-    AsideComponent
   ],
   bootstrap: [AppComponent]
 })
