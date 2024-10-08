@@ -27,7 +27,33 @@ export class CalendarService {
     return Math.ceil((numberOfDays + 1) / 7);
   }
 
+  getWeekDatesPrev(year: number, weekNumber: number): Date[] {
+    const weekDates: Date[] = [];
+
+    // Obtenir le premier jour de l'année
+    const firstDayOfYear = new Date(year, 0, 1);
+
+    // Trouver le jour de la semaine du 1er janvier (0 = dimanche, 1 = lundi, ...)
+    const firstDayOfWeek = firstDayOfYear.getDay();
+
+    // Calculer le décalage en jours pour atteindre la première semaine (en supposant que la semaine commence le lundi)
+    const daysOffset = firstDayOfWeek <= 4 ? -firstDayOfWeek + 1 : 7 - firstDayOfWeek + 1;
+
+    // Calculer la date du premier jour de la semaine donnée
+    const firstDayOfWeekNumber = new Date(year, 0, 1 + daysOffset + (weekNumber - 1) * 7);
+
+    // Boucler sur 7 jours pour obtenir chaque jour de la semaine donnée
+    for (let i = 0; i < 7; i++) {
+      const currentDate = new Date(firstDayOfWeekNumber);
+      currentDate.setDate(firstDayOfWeekNumber.getDate() + i);
+      weekDates.push(currentDate);
+    }
+
+    return weekDates;
+  }
+
   getDatesFromWeek(year:number, weekNumber:number):Date{
+
     const date=new Date(year,0,1); //1er janvier de l'annee
     const firstDayOfWeek=date.getDay();
 
@@ -44,7 +70,15 @@ export class CalendarService {
   }
 
   getWeekDates(year:number,weekNumber:number):Date[]{
+
+    const options: Intl.DateTimeFormatOptions = {
+      year:'numeric',
+      month:'long',
+      day:'numeric'
+    }
     let startOfWeek= this.getDatesFromWeek(year,weekNumber);
+    const formattedDate:string = startOfWeek.toLocaleDateString(undefined,options)
+
 
     let daysOfWeek : Date[]=[];
     for(let i=0; i<7; i++){
