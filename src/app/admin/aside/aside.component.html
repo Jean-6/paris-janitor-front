@@ -5,14 +5,20 @@
         <h5 style="color: #fafbfc">Paris Janitor</h5>
       </div>
       <ul class="sidebar-links">
+        <span style="color: #fafbfc">Espace  admin</span>
+        <h4>
+          <span>Annonces</span>
+          <div class="menu-separator"></div>
+        </h4>
         <li>
-          <a href="/ads">Annonces</a>
+          <a href="/admin-ads">Annonces</a>
         </li>
         <li>
-          <a href="/users">Utilisateurs</a>
+          <a href="/admin-users">Utilisateurs</a>
         </li>
         <li>
-          <a href="#">Deconnexion</a>
+          <!--<a href="#">Deconnexion</a>-->
+          <button (click)="onLogout()" class="btn btn-link">Deconnexion</button>
         </li>
       </ul>
     </aside>

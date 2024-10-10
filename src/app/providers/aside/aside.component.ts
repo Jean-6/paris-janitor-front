@@ -13,7 +13,6 @@ export class AsideComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
   // Appeler la méthode de déconnexion
   onLogout(): void {
     this.authService.logout();
