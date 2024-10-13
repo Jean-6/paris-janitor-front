@@ -9,9 +9,7 @@ import { MyAdsComponent } from './my-ads/my-ads.component';
 import { DeliveryReqComponent } from './delivery-req/delivery-req.component';
 import {AsideComponent} from "./aside/aside.component";
 import { InvoiceComponent } from './invoice/invoice.component';
-import {CalendarModule} from "primeng/calendar";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {ProgressSpinnerModule} from "primeng/progressspinner";
 import { BookingComponent } from './booking/booking.component';
 
 
@@ -36,11 +34,11 @@ export const clientLessorRoutes: Routes = [
     DeliveryReqComponent,
     AsideComponent,
     InvoiceComponent,
-    BookingComponent
+    BookingComponent,
   ],
   imports: [
     CommonModule, RouterModule.forChild(clientLessorRoutes), FormsModule,
-    ReactiveFormsModule, CalendarModule, BrowserAnimationsModule, ProgressSpinnerModule
+    ReactiveFormsModule, BrowserAnimationsModule
   ],
   providers:[],
   exports:[RouterModule]

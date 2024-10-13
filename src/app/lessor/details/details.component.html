@@ -1,125 +1,189 @@
 <app-aside></app-aside>
 
-<div class="container-fluid mt-4 " style="margin-left: 12%;margin-bottom:15%;width: 90%">
+<div class="d-flex flex-column"  style="margin-left: 12%;margin-bottom:15%;width: 90%">
 
   <div class="row">
     <div class="col"><a href="/lessor">Retour</a></div>
   </div>
 
-  <div class="row  mt-4">
+  <div class="row py-4">
 
     <div *ngIf="!this.loadPropertyDetails" class="center-spinner">
-      <p-progressSpinner ></p-progressSpinner>
+      <div class="spinner-border text-primary" role="status" style="width: 5rem; height: 5rem">
+        <span class="sr-only">Paris Janitor</span>
+      </div>
     </div>
 
     <div *ngIf="this.loadPropertyDetails" class="row">
       <h3>Details</h3>
 
 
-    <div class="row">
-      <div class="col"><p>Type de bien : {{this.propertyDetails.type}}</p></div>
-      <div class="col"><p>Loyer : {{this.propertyDetails.rent | currency: 'EUR'}} </p></div>
+      <div class="row">
+        <div class="col"><p>Type de bien : {{this.propertyDetails.type}}</p></div>
+        <div class="col"><p>Loyer : {{this.propertyDetails.rent | currency: 'EUR'}} </p></div>
+      </div>
+
+      <div class="row">
+        <div class="col"><p>Nombre de pieces : {{this.propertyDetails.pieces}}</p></div>
+        <div class="col"><p>Surface : {{this.propertyDetails.area | number}} m2</p></div>
+      </div>
+
+      <div class="row">
+        <h5>Description </h5>
+        <div class="col">{{this.propertyDetails.description}}</div>
+      </div>
+
+      <div class="row py-3">
+        <h5>Contact </h5>
+        <div class="col">Tel : {{this.propertyDetails.tel}}</div>
+      </div>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="col"><p>Nombre de pieces : {{this.propertyDetails.pieces}}</p></div>
-      <div class="col"><p>Surface : {{this.propertyDetails.area | number}} m2</p></div>
+  <!--Booking-->
+
+  <div *ngIf="!this.loadPropertyBooking " class="center-spinner"> <!--"!this.loadPropertyBooking || this.reloadBookings " -->
+    <div class="spinner-border text-primary" role="status" style="width: 5rem; height: 5rem">
+      <span class="sr-only">Paris Janitor</span>
     </div>
-
-    <div class="row">
-      <h5>Description </h5>
-      <div class="col">{{this.propertyDetails.description}}</div>
-
-    </div>
-    </div>
-
-
   </div>
 
 
-
-  <div class="row mt-4">
+  <div *ngIf="this.loadPropertyBooking" class="row ">
     <div class="row title ">
       <h3>Réservation</h3>
     </div>
 
-    <div *ngIf="!this.loadPropertyBooking " class="center-spinner"> <!--"!this.loadPropertyBooking || this.reloadBookings " -->
-      <p-progressSpinner ></p-progressSpinner>
-    </div>
 
-
-    <div *ngIf="this.loadPropertyBooking"  class="row mt-2"> <!-- "this.reloadBookings || this.loadPropertyBooking" -->
+    <div   class="row mt-2">
       <form [formGroup]="bookingDateForm">
         <div id="booking-tab" >
-          <table class="table table-bordered">
+          <table class="table table-bordered ">
             <tr>
               <td colspan="7" class="text-center">Semaine du  {{this.bookingService.startAndEndDateWeek.startOfWeek | date : 'dd-MM-yyyy'}} Au {{this.bookingService.startAndEndDateWeek.endOfWeek | date: 'dd-MM-yyyy'}}</td></tr>
             <tr>
-              <th></th>
-              <th class="fs-6  fw-normal px-5 "  *ngFor="let day of dayOfWeek;let i = index " >{{day}} {{this.bookingService.weekDates[i] | date : 'd/MM/yy' }}</th>
+              <!--<td *ngFor="let day of dayOfWeek;let i = index ">{{day}} {{this.bookingService.weekDates[i] | date : 'd/MM/yy' }}</td>-->
+              <td class="fs-6  fw-normal px-5 "   *ngFor="let day of dayOfWeek;let i = index ">{{day}} {{this.bookingService.weekDates[i] | date : 'd/MM/yy' }}</td>
             </tr>
-            <tr *ngFor="let mh of morningHour">
-              <td class="text-center px-3">{{mh}}</td><td class="text-center" *ngFor="let d of dayOfWeek;let i = index"><input (click)="disableOtherCheckBoxes()" name="{{d}}-{{mh}}"  class="form-check-input" type="checkbox" value="{{mh}}"></td>
+            <tr>
+              <!--<td *ngFor="let day of dayOfWeek;let i = index ">{{day}} {{this.bookingService.weekDates[i] | date : 'd/MM/yy' }}</td>-->
+              <td  class="fs-6  fw-normal px-5 "   *ngFor="let day of dayOfWeek;let i = index ">Radio</td>
             </tr>
-            <div class="mt-2"></div>
-            <tr *ngFor="let ah of afternoonHour">
-              <td class="text-center px-3">{{ah}}</td><td class="text-center" *ngFor="let d of dayOfWeek;let j = index "><input (click)="disableOtherCheckBoxes()" name="{{d}}-{{ah}}" class="form-check-input" type="checkbox" value="{{ah}}"></td>
-            </tr>
+
           </table>
         </div>
 
         <div class="form-group">
-         <div class="row" >
+          <div class="d-flex flex-row justify-content-around" >
 
-           <div class="col" *ngIf="(bookingService.today && this.bookingService.startAndEndDateWeek.startOfWeek) ">
-             <div class="col" *ngIf="(this.bookingService.today) < (this.bookingService.startAndEndDateWeek.startOfWeek )">
-               <button type="submit" (click)="this.bookingService.getPreviousWeekDate();this.refreshData()" class="btn btn-link mb-1 btn-sm">Précédente</button>
-           </div>
-           </div>
+            <div *ngIf="(bookingService.today && this.bookingService.startAndEndDateWeek.startOfWeek) ">
+              <div *ngIf="(this.bookingService.today) < (this.bookingService.startAndEndDateWeek.startOfWeek )">
+                <button type="submit" (click)="this.bookingService.getPreviousWeekDate();this.refreshData()" class="btn btn-link mb-1 btn-sm">Précédente</button>
+              </div>
+            </div>
 
-           <div class="col">
-             <button type="submit" (click)="this.bookingService.getNextWeekDate();this.refreshData()" class="btn btn-link mb-1 btn-sm">Suivante</button>
-           </div>
-         </div>
-
-          <div class="row">
-            <div class="col-md (-3">
-              <button type="submit" (click)="onSubmitBookingDate()" class="btn btn-primary mb-1 btn-sm" [disabled]="bookingDateForm.invalid" >Sauvegarder</button>  <!-- -->
+            <div>
+              <button type="submit" (click)="this.bookingService.getNextWeekDate();this.refreshData()" class="btn btn-link mb-1 btn-sm">Suivante</button>
             </div>
           </div>
-
         </div>
+
       </form>
     </div>
 
-  </div>
 
 
+    <!--<div *ngIf="this.loadPropertyBooking" class="row py-5">
+      <div class="row title ">
+        <h3>Réservation</h3>
+      </div>
 
-  <!--Service-->
+      <div   class="row mt-2">
+        <form [formGroup]="bookingDateForm">
+          <div id="booking-tab" >
+            <table class="table table-bordered">
+              <tr>
+                <td colspan="7" class="text-center">Semaine du  {{this.bookingService.startAndEndDateWeek.startOfWeek | date : 'dd-MM-yyyy'}} Au {{this.bookingService.startAndEndDateWeek.endOfWeek | date: 'dd-MM-yyyy'}}</td></tr>
+              <tr>
+                <th></th>
+                <th class="fs-6  fw-normal px-5 "  *ngFor="let day of dayOfWeek;let i = index " >{{day}} {{this.bookingService.weekDates[i] | date : 'd/MM/yy' }}</th>
+              </tr>
+              <tr *ngFor="let mh of morningHour">
+                <td class="text-center px-3">{{mh}}</td><td class="text-center" *ngFor="let d of dayOfWeek;let i = index"><input (click)="disableOtherCheckBoxes()" name="{{d}}-{{mh}}"  class="form-check-input" type="checkbox" value="{{mh}}"></td>
+              </tr>
+              <div class="mt-2"></div>
+              <tr *ngFor="let ah of afternoonHour">
+                <td class="text-center px-3">{{ah}}</td><td class="text-center" *ngFor="let d of dayOfWeek;let j = index "><input (click)="disableOtherCheckBoxes()" name="{{d}}-{{ah}}" class="form-check-input" type="checkbox" value="{{ah}}"></td>
+              </tr>
+            </table>
+          </div>
 
-  <div class="row mt-4">
-    <div class="row title ">
-      <h3>Demande de prestation</h3>
+          <div class="form-group">
+           <div class="row" >
+
+             <div class="col" *ngIf="(bookingService.today && this.bookingService.startAndEndDateWeek.startOfWeek) ">
+               <div class="col" *ngIf="(this.bookingService.today) < (this.bookingService.startAndEndDateWeek.startOfWeek )">
+                 <button type="submit" (click)="this.bookingService.getPreviousWeekDate();this.refreshData()" class="btn btn-link mb-1 btn-sm">Précédente</button>
+             </div>
+             </div>
+
+             <div class="col">
+               <button type="submit" (click)="this.bookingService.getNextWeekDate();this.refreshData()" class="btn btn-link mb-1 btn-sm">Suivante</button>
+             </div>
+           </div>
+
+            <div class="row">
+              <div class="col-md (-3">
+                <button type="submit" (click)="onSubmitBookingDate()" class="btn btn-primary mb-1 btn-sm" [disabled]="bookingDateForm.invalid" >
+                  Sauvegarder
+                </button>
+              </div>
+            </div>
+
+
+            <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+            <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+          </div>
+        </form>
+      </div>
+    </div>-->
+
+    <!--Service-->
+
+    <div *ngIf="!this.isLoadingDeliveries" class="center-spinner"> <!--"!this.loadPropertyBooking || this.reloadBookings " -->
+      <div class="spinner-border text-primary" role="status" style="width: 5rem; height: 5rem">
+        <span class="sr-only">Paris Janitor</span>
+      </div>
     </div>
-    <form [formGroup]="deliveryReqForm">
-      <div  class="form-group col-sm-4 mr-2">
-        <label for="type" class="form-label">Type</label>
-        <select formControlName="type" id="type" class="form-select ">
-          <option [ngValue]="null" disabled>Selectionner le service</option>
-          <option *ngFor="let delivery of deliveries"  [ngValue]="delivery.id">{{delivery.type}}</option>
-        </select>
+
+
+    <div *ngIf="this.isLoadingDeliveries" class="row">
+      <div class="row title ">
+        <h3>Demande de prestation</h3>
       </div>
-      <div class="form-group mb-3 col-sm-6">
-        <label for="description" class="form-label">Description</label>
-        <textarea class="form-control " formControlName="description" id="description"  rows="3"  required></textarea>
-      </div>
-      <div class="form-group ">
-        <button type="submit" (click)="onSubmitDeliveryRequest()" class="btn btn-primary mb-1 btn-sm" [disabled]="deliveryReqForm.invalid" >Envoyer</button> <!-- [disabled]="!deliveryReqForm.valid"-->
-      </div>
-    </form>
+      <form [formGroup]="deliveryReqForm">
+        <div  class="form-group col-sm-4 mr-2">
+          <label for="type" class="form-label">Type</label>
+          <select formControlName="type" id="type" class="form-select ">
+            <option [ngValue]="null" disabled>Selectionner le service</option>
+            <option *ngFor="let delivery of deliveries"  [ngValue]="delivery.id">{{delivery.type}}</option>
+          </select>
+        </div>
+        <div class="form-group mb-3 col-sm-6">
+          <label for="description" class="form-label">Description</label>
+          <textarea class="form-control " formControlName="description" id="description"  rows="3"  required></textarea>
+        </div>
+        <div class="form-group ">
+          <button type="submit" (click)="onSubmitDeliveryRequest()" class="btn btn-primary mb-1 btn-sm" [disabled]="deliveryReqForm.invalid" >Envoyer</button> <!-- [disabled]="!deliveryReqForm.valid"-->
+        </div>
+      </form>
+
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    </div>
   </div>
+
+
+
 </div>
-
-
-

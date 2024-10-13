@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit,OnDestroy{
   isLoadingImages: boolean = false;
   private propertyIds: any;
 
-  private userId:string="66d5f19a64eebd353b503c85";
+  userId!: String;
 
   constructor(
               public propertyService: PropertyService,
@@ -25,25 +25,10 @@ export class HomeComponent implements OnInit,OnDestroy{
 
   ngOnInit() {
 
+    this.userId = localStorage.getItem("userId") || '';
+
     //this.getAllProperties();
     this.getPropertiesPerPage();
-
-    this.propertyService.getPropertiesByUserId(this.userId).pipe(
-      switchMap(props => {
-        const ids = props.map((obj: { id: any; }) =>obj.id);
-        return this.imageService.getImgByProperId(ids);
-      }),
-    ).subscribe(
-      imgs=>{
-        this.images = imgs;
-        console.log('response ok  :'+this.images[0])
-      },
-      error => {
-        //this.error = '';
-        console.error(error);
-
-      }
-    )
 
   }
 

@@ -1,44 +1,64 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import { Observable} from "rxjs";
+import {forkJoin, from, map, mergeMap, Observable, of, toArray} from "rxjs";
 import { DeliveryRequest} from "../../model/deliveryRequest";
 import {DeliveryReqSearchDto} from "../../dto/delivReqSearchDto";
 import {UserService} from "../../services/user.service";
 import {PropertyService} from "../../services/property.service";
+import {ApiUrls} from "../../.env";
+import {Property} from "../../model/property";
+import {DeliveryService} from "../../services/delivery.service";
+import {Delivery} from "../../model/delivery";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeliveryReqService {
 
-  private deliveryRequestUrl = 'http://localhost:8081/api/delivery-request'; // URL pour les livraisons
-  private propertyUrl = 'http://localhost:8081/api/property/'; // URL pour les propriétés
-  private userUrl = 'http://localhost:8081/api/user/'; // URL pour les utilisateurs
-  private userConnected:string="66d5f19a64eebd353b503c85";
-  public delivReqSearch: DeliveryReqSearchDto=new DeliveryReqSearchDto();
+  public delivReqSearch: DeliveryReqSearchDto = new DeliveryReqSearchDto();
 
-  constructor(private httpClient:HttpClient,
-              private userService:UserService,
-              private propertyService:PropertyService) { }
-
-  saveDeliveryRequest(propertyId:string,deliveryReq: DeliveryRequest):Observable<any>{
-    //deliveryReq.userId=this.userConnected;
-    deliveryReq.propertyId=propertyId;
-    return this.httpClient.post(`${this.deliveryRequestUrl}`,deliveryReq);
+  constructor(private httpClient: HttpClient,
+              private deliveryService: DeliveryService,
+              private propertyService: PropertyService) {
   }
 
-  fetchDeliveriesRequestPerPage():Observable<{ content:DeliveryRequest[],totalPages:number }>{
-    return this.httpClient.get<{content:DeliveryRequest[],totalPages:number}>(`${this.deliveryRequestUrl}/page`);
+  saveDeliveryRequest(deliveryRequest: any): Observable<any> {
+    return this.httpClient.post(`${ApiUrls.DELIVERY_REQUEST}/`, deliveryRequest);
   }
 
-  searchForService(){
+
+  searchForService() {
     console.log(this.delivReqSearch)
   }
 
-  getDeliveryRequestsByPropertyId(propertyIds: string[]): Observable<DeliveryRequest[]> {
-    return this.httpClient.get<DeliveryRequest[]>(`${this.deliveryRequestUrl}/byPropertyId/${propertyIds}`);
+  getDeliveryRequestsByPropertyId(userId: string): Observable<DeliveryRequest[]> {
+    return this.httpClient.get<DeliveryRequest[]>(`${ApiUrls.DELIVERY_REQUEST}/byPropertyId/${userId}`);
+  }
+
+  getDeliveryRequestsByUserId(userId: string): Observable<DeliveryRequest[]> {
+    return this.httpClient.get<DeliveryRequest[]>(`${ApiUrls.DELIVERY_REQUEST}/user?userId=${userId}`);
   }
 
 
+  associateDeliveryToRequests(deliveryRequests: DeliveryRequest[]): Observable<DeliveryRequest[]> {
+    return from(deliveryRequests).pipe(
+      mergeMap((deliveryRequest: DeliveryRequest) => {
+        if (deliveryRequest.type) {
+          console.log("map : "+deliveryRequest.type)
+          // Pour chaque deliveryRequest, on récupère la delivery correspondante
+          return this.deliveryService.getDeliveryBy(deliveryRequest.type).pipe(
+            map((delivery: Delivery) => {
+              deliveryRequest.type = delivery?.type || 'Unknown delivery';
+              return deliveryRequest;
+            })
+          );
+        } else {
+          // Si pas de deliveryId, on renvoie la deliveryRequest telle quelle
+          return of(deliveryRequest);
+        }
+      }),
+      toArray()  // On rassemble tous les éléments en un tableau après les transformations
+    );
+  }
 
 }
