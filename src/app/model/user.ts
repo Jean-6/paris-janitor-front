@@ -1,3 +1,5 @@
+import {Profile} from "./profile";
+
 export class User {
   constructor(
     public id?: string,
@@ -7,5 +9,7 @@ export class User {
     public createdAt?: Date,
     public role?: string,
     public active?: boolean,
+    public roles?: string[],
+    public profile?: Profile,
   ) { }
 }

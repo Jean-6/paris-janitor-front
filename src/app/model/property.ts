@@ -11,6 +11,7 @@ export class Property {
       city?:string,
       zip?:string
     },
+    public tel?:string,
     public userId?:string
   ) { }
 }
