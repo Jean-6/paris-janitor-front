@@ -1,6 +1,7 @@
 import {LOCALE_ID, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr'; // Import des locales françaises
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SignupComponent } from './signup/signup.component';
@@ -12,9 +13,7 @@ import {SigninService} from "./signin/signin.service";
 import {SignupService} from "./signup/signup.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CommonModule, DatePipe} from "@angular/common";
-import {ErrorHandlerService} from "./services/error-handler.service";
 import {ProvidersModule} from "./providers/providers.module";
-import { HomeComponent } from './travelers/home/home.component';
 import {TravelersModule} from "./travelers/travelers.module";
 import {LessorModule} from "./lessor/lessor.module";
 import {PropertyService} from "./services/property.service";
@@ -22,17 +21,15 @@ import {ImageService} from "./services/image.service";
 
 import {AdminModule} from "./admin/admin.module";
 
+registerLocaleData(localeFr, 'fr-FR'); // Enregistrer les données pour la locale 'fr-FR'
+
+
 @NgModule({
   declarations: [
     AppComponent,
     SignupComponent,
     SigninComponent,
     PasswordComponent,
-    //HomeComponent,
-    //HomeComponent,
-    //HomeComponent,
-
-
   ],
   imports: [
     BrowserModule,
@@ -52,10 +49,9 @@ import {AdminModule} from "./admin/admin.module";
     SigninService,
     SignupService,
     ReactiveFormsModule,
-    ErrorHandlerService,
     PropertyService,
     ImageService,
-    { provide: LOCALE_ID, useValue: 'fr-FR' },
+    { provide: LOCALE_ID, useValue: 'fr-FR' },// Définir 'fr-FR' comme locale par défaut
     DatePipe
   ],
   exports: [
