@@ -1,6 +1,58 @@
-<app-aside></app-aside>
 
-<div class="d-flex flex-column"  style="margin-left: 12%;margin-bottom:15%;width: 90%">
+
+
+<div class="d-flex flex-row" >
+  <div class="" style="width: 10%;margin-top: 10%;height:100% ">
+    <ul class="sidebar-links">
+      <h4>
+        <span>Annonces</span>
+        <div class="menu-separator"></div>
+      </h4>
+
+      <li>
+        <a href="/lessor">Accueil</a>
+      </li>
+      <li>
+        <a href="/lessor/ad-creation">New</a>
+      </li>
+      <li>
+        <a href="/lessor/my-ads">Mes annonces</a>
+      </li>
+      <li>
+        <a href="/lessor/booking-list">Réservations</a>
+      </li>
+      <h4>
+        <span>Prestations</span>
+        <div class="menu-separator"></div>
+      </h4>
+      <li>
+        <a href="/lessor/delivery-request">Demandes</a>
+      </li>
+      <h4>
+        <span>Factures</span>
+        <div class="menu-separator"></div>
+      </h4>
+      <li>
+        <a href="/lessor/invoice">Liste</a>
+      </li>
+      <li>
+        <a href="#">Recap. Finances</a>
+      </li>
+      <h4>
+        <span>Compte</span>
+        <div class="menu-separator"></div>
+      </h4>
+      <li>
+        <!--<a href="#">Deconnexion</a>-->
+        <button (click)="onLogout()" class="btn btn-link">Deconnexion</button>
+      </li>
+    </ul>
+  </div>
+
+
+
+
+  <div class=" d-flex flex-column" style="width: 50%;margin-left: 12%;margin-top: 5%">
 
   <div class="row">
     <div class="col"><a href="/lessor">Retour</a></div>
@@ -14,7 +66,7 @@
       </div>
     </div>
 
-    <div *ngIf="this.loadPropertyDetails" class="row">
+    <div *ngIf="this.loadPropertyDetails && this.propertyDetails" class="row">
       <h3>Details</h3>
 
 
@@ -49,7 +101,7 @@
   </div>
 
 
-  <div *ngIf="this.loadPropertyBooking" class="row ">
+  <div *ngIf="this.loadPropertyBooking && this.propertyDetails" class="row ">
     <div class="row title ">
       <h3>Réservation</h3>
     </div>
@@ -67,7 +119,10 @@
             </tr>
             <tr>
               <!--<td *ngFor="let day of dayOfWeek;let i = index ">{{day}} {{this.bookingService.weekDates[i] | date : 'd/MM/yy' }}</td>-->
-              <td  class="fs-6  fw-normal px-5 "   *ngFor="let day of dayOfWeek;let i = index ">Radio</td>
+              <td  class="fs-6  fw-normal px-5 text-center" *ngFor="let day of dayOfWeek;let i = index ">
+                {{this.bookingService.weekDates[i] |date:'EEEE':'fr-FR'  }}
+                <input  name="{{this.bookingService.weekDates[i] }}" class="form-check-input" type="checkbox" value="{{this.bookingService.weekDates[i] }}">
+              </td>
             </tr>
 
           </table>
@@ -82,15 +137,38 @@
               </div>
             </div>
 
-            <div>
-              <button type="submit" (click)="this.bookingService.getNextWeekDate();this.refreshData()" class="btn btn-link mb-1 btn-sm">Suivante</button>
+            <div class="d-flex flex-row ">
+              <div class="mx-5">
+                <button type="submit" (click)="this.bookingService.getNextWeekDate();this.refreshData()" class="btn btn-link mb-1 btn-sm">Suivante</button>
+              </div>
+              <div class="mx-5">
+                <button type="submit" (click)="onSubmitBookingDate()" class="btn btn-primary mb-1 btn-sm" [disabled]="bookingDateForm.invalid" >Sauvegarder</button>
+              </div>
+
             </div>
           </div>
+
+          <!--<div class="row">
+            <div class="col-md (-3">
+              <button type="submit" (click)="onSubmitBookingDate()" class="btn btn-primary mb-1 btn-sm" [disabled]="bookingDateForm.invalid" >
+                Sauvegarder
+              </button>
+            </div>
+          </div>-->
+
+
         </div>
 
       </form>
     </div>
 
+
+
+
+
+    <div *ngIf="!this.propertyDetails" class="row ">
+
+    </div>
 
 
     <!--<div *ngIf="this.loadPropertyBooking" class="row py-5">
@@ -158,7 +236,7 @@
     </div>
 
 
-    <div *ngIf="this.isLoadingDeliveries" class="row">
+    <div *ngIf="this.isLoadingDeliveries" class="row py-4">
       <div class="row title ">
         <h3>Demande de prestation</h3>
       </div>
@@ -186,4 +264,5 @@
 
 
 
+</div>
 </div>

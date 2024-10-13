@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PropertyService} from "../../services/property.service";
 import {Property} from "../../model/property";
+import {AuthService} from "../../services/auth.service";
 
 
 @Component({
@@ -15,7 +16,8 @@ export class MyAdsComponent implements OnInit ,OnDestroy{
   isLoading:boolean = false;
   dataLoading:boolean = false;
 
-  constructor(public propertyService:PropertyService) {}
+  constructor(public propertyService:PropertyService,
+              private authService: AuthService) {}
 
 
   ngOnInit(): void {
@@ -37,5 +39,11 @@ export class MyAdsComponent implements OnInit ,OnDestroy{
 
 
   ngOnDestroy(): void {}
+
+  // Appeler la méthode de déconnexion
+  onLogout(): void {
+    this.authService.logout();
+  }
+
 
 }

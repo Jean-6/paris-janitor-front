@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PropertyService} from "../../services/property.service";
 import {ImageService} from "../../services/image.service";
-import {Observable, switchMap} from "rxjs";
 import {Property} from "../../model/property";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-home',
@@ -21,14 +21,15 @@ export class HomeComponent implements OnInit,OnDestroy{
 
   constructor(
               public propertyService: PropertyService,
-              private imageService: ImageService) {}
+              private imageService: ImageService,
+              private authService: AuthService) {}
 
   ngOnInit() {
 
     this.userId = localStorage.getItem("userId") || '';
 
-    //this.getAllProperties();
-    this.getPropertiesPerPage();
+    this.getAllProperties();
+    //this.getPropertiesPerPage();
 
   }
 
@@ -54,7 +55,7 @@ export class HomeComponent implements OnInit,OnDestroy{
   getPropertiesPerPage() {
     this.propertyService.getPropertiesPerPage().subscribe(
       (res) =>{
-        this.properties = res.content;
+        //this.properties = res.content;
         //this.propertyIds=this.properties.map(item=>item.id);
       },
       (error)=> {
@@ -110,6 +111,10 @@ export class HomeComponent implements OnInit,OnDestroy{
     )
   }
 
+  // Appeler la méthode de déconnexion
+  onLogout(): void {
+    this.authService.logout();
+  }
 
 
   ngOnDestroy(): void {

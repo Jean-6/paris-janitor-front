@@ -8,14 +8,14 @@ import { FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {DeliveryReqService} from "../delivery-req/delivery-req.service";
 import {CalendarService} from "../../services/calendar.service";
 import {BookingService} from "../booking/booking.service";
-import {DeliveryDto} from "../../dto/deliveryDto";
 import {DatePipe} from "@angular/common";
 
 import * as $ from 'jquery';
 import {Booking} from "../../model/booking";
 import {Delivery} from "../../model/delivery";
-import {Observable} from "rxjs";
 import {DeliveryRequest} from "../../model/deliveryRequest";
+import {AuthService} from "../../services/auth.service";
+import {HttpClient} from "@angular/common/http";
 
 
 
@@ -60,6 +60,7 @@ export class DetailsComponent implements OnInit,OnDestroy,AfterViewInit {
   afternoonHour=["14h00","15h00","16h00","17h00"]
 
   userId!:string;
+  propertyId!:string;
 
 
 
@@ -71,10 +72,19 @@ export class DetailsComponent implements OnInit,OnDestroy,AfterViewInit {
               private formBuilder: FormBuilder,
               private calendarService:CalendarService,
               public bookingService:BookingService,
-              private datePipe: DatePipe) {}
+              private datePipe: DatePipe,
+              private authService: AuthService,
+              private route: ActivatedRoute,
+              private httpClient: HttpClient
+              ) {}
 
 
   ngOnInit(): void {
+
+    // Récupérer l'ID du produit à partir des paramètres de la route
+    this.propertyId = this.route.snapshot.paramMap.get('id')!;
+    console.log("propertyId : "+this.propertyId);  // Affiche l'ID du produit dans la console
+
 
     this.userId = localStorage.getItem("userId") || '';
 
@@ -89,26 +99,36 @@ export class DetailsComponent implements OnInit,OnDestroy,AfterViewInit {
     });
 
     /*========*/
-    this.router.queryParams.subscribe({
-      next: param => this.propertyService.getPropertyById(param["id"]).subscribe({
+    this.propertyService.getPropertyById(this.propertyId).subscribe({
         next: res =>{
-          console.log("res : "+res)
+          console.log("get propertyById res : "+res)
           this.propertyDetails = res;
-          this.bookingService.propertyId= param["id"]
-        },
-        error: err => console.error('Error fetching property details',err),
-        complete: ()=> this.loadPropertyDetails = true,
-      }),
-      error: err=> console.error('Error fetching property param id',err),
-      //complete: ()=> this.loadPropertyDetails = true,
+          this.bookingService.propertyId= res.id || '';
+          },
+       error: err => console.error('Error fetching property details',err),
+       complete: ()=> this.loadPropertyDetails = true,
     })
 
 
-    this.router.queryParams.subscribe({
-      next: param => {
-        this.bookingService.propertyId= param["id"];
+    /*this.httpClient.get<Property>(`${ApiUrls.PROPERTY}/${this.propertyId}`)
+      .subscribe({
+       next:res=> {
+         this.propertyDetails = res;
+         console.log("http : "+res)
+       },
+        error: err => console.error('Error fetching property details',err),
+        complete: ()=> this.loadPropertyDetails = true,
+    })*/
+
+
+
+    /*=======*/
+
+    //this.router.queryParams.subscribe({
+      //next: param => {
+        this.bookingService.propertyId= this.propertyId
         //this.reloadData()
-        this.bookingService.fetchAllBookingsData(param["id"], this.bookingService.weekNumber,this.bookingService.startAndEndDateWeek.startOfWeek.getFullYear().toString()).subscribe({
+        this.bookingService.fetchAllBookingsData(this.propertyId, this.bookingService.weekNumber,this.bookingService.startAndEndDateWeek.startOfWeek.getFullYear().toString()).subscribe({
           next: res => {
             this.bookingService.propertyBookings = res;
             console.log(res);
@@ -122,12 +142,14 @@ export class DetailsComponent implements OnInit,OnDestroy,AfterViewInit {
             this.loadPropertyBooking = true;
           }
         })
-      },
-      error:err => console.error('Error fetching property param id',err),
-      complete: ()=>{}
-    })
+      //},
+      //error:err => console.error('Error fetching property param id',err),
+      //complete: ()=>{}*/
+    //})
     //this.disabledCheckboxes()
-    console.log("compo : "+this.bookingService.propertyId,this.bookingService.weekNumber,this.bookingService.startAndEndDateWeek.startOfWeek.getFullYear().toString())
+
+
+    //console.log("compo : "+this.bookingService.propertyId,this.bookingService.weekNumber,this.bookingService.startAndEndDateWeek.startOfWeek.getFullYear().toString())
 
     //============
     this.deliveryService.getDeliveries().subscribe({
@@ -279,5 +301,12 @@ export class DetailsComponent implements OnInit,OnDestroy,AfterViewInit {
     this.disabledCheckboxes()
     //this.reloadBookings = false;
   }
+
+
+  // Appeler la méthode de déconnexion
+  onLogout(): void {
+    this.authService.logout();
+  }
+
 
 }

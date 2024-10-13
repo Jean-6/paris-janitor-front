@@ -5,42 +5,89 @@ import {Router} from "@angular/router";
 import {ErrorHandlerService} from "../../services/error-handler.service";
 import {PropertyService} from "../../services/property.service";
 import {DeliveryReqService} from "./delivery-req.service";
+import {DeliveryRequest} from "../../model/deliveryRequest";
 
+
+import {DatePipe} from "@angular/common";
+import {Delivery} from "../../model/delivery";
+import {DeliveryService} from "../../services/delivery.service";
+import {AuthService} from "../../services/auth.service";
+
+//import * as $ from 'jquery';
+//import * as $ from 'jquery';
+//npm i --save-dev @types/ jquery
 
 @Component({
   selector: 'app-delivery-req',
   templateUrl: './delivery-req.component.html',
   styleUrls: ['./delivery-req.component.css']
 })
-export class DeliveryReqComponent implements OnInit,OnDestroy{
-  //submitted = false;
-  //adForm!:FormGroup;
-  //searchForm!:FormGroup;
-  //isRegistered = false;
+export class DeliveryReqComponent implements OnInit,OnDestroy {
 
-  /*private areaRegex = /\b(1000|[1-9][0-9]{0,2})\b/; //1 à 1000m2
-  private piecesRegex =  /^(1[0-9]|[1-9])$/;
-  private rentRegex =/^(?:[1-9]\d{0,2}(?:[\s,]?\d{3})*|\d+)(?:\.\d{1,2})?$/;
-  private descriptionRegex ="";
-  private streetRegex = /^[0-9]{1,4}\s[A-Za-zÀ-ÖØ-öø-ÿ' -]+(?:\s[A-Za-zÀ-ÖØ-öø-ÿ' -]+)*,\s?[0-9]{5}\s[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/;
-  private cityRegex =/^[A-Za-zÀ-ÖØ-öø-ÿ' -]+(?:-[A-Za-zÀ-ÖØ-öø-ÿ' -]+)*$/;
-  private zipRegex = /^[0-9]{5}$/;
+  deliveryRequests: DeliveryRequest[] = [];
+  deliveriesType: Delivery[] = [];
+  propertyIds: string[] = [];
+  isLoadingdeliveryRequest= false;
+  isLoadingDeliveries=false;
+  userId!: string ;
 
-  adFormSubmitted : boolean=false;*/
 
-  constructor(private imageService:ImageService,
+  constructor(private imageService: ImageService,
               private router: Router,
               private formBuilder: FormBuilder,
               private errorHandler: ErrorHandlerService,
-              private propertyService : PropertyService,
-              public deliveryRequestService: DeliveryReqService) {}
+              private propertyService: PropertyService,
+              public deliveryRequestService: DeliveryReqService,
+              public deliveryService: DeliveryService,
+              public datePipe : DatePipe,
+              private authService: AuthService) {
+  }
 
 
   ngOnInit(): void {
+
+    this.userId = localStorage.getItem("userId") || '';
+    this.getDeliveriesType();
+    this.getDeliveriesRequest(this.userId);
+
+
   }
 
-  ngOnDestroy(): void {
+  getDeliveriesType(){
+    this.deliveryService.getDeliveries().subscribe(
+      (res)=> this.deliveriesType = res,
+      (error)=> console.error('Error fetching deliveries data'),
+      ()=> this.isLoadingDeliveries=true,
+    )
   }
+
+  getDeliveriesRequest(userId : string){
+    this.deliveryRequestService.getDeliveryRequestsByUserId(userId).subscribe(
+      (res) => {
+        console.log("res :"+res)
+        this.deliveryRequestService.associateDeliveryToRequests(res).subscribe({
+          next: (updatedRequests) => {
+            console.log('Updated Delivery Requests:', updatedRequests);
+            this.deliveryRequests = updatedRequests;
+          }
+        })
+        console.log(res)
+      },
+      (err)=>{},
+      ()=>{this.isLoadingdeliveryRequest=true});
+  }
+
+
+  ngOnDestroy(): void {
+
+  }
+
+
+  // Appeler la méthode de déconnexion
+  onLogout(): void {
+    this.authService.logout();
+  }
+
 
 
 }
