@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {ApiUrls} from "../../../../paris-janitor-front_unzipped/paris-janitor-front/src/app/.env";
-import {User} from "../../../../paris-janitor-front_unzipped/paris-janitor-front/src/app/model/user";
+
+import {ApiUrls} from "../.env";
+import {User} from "../model/user";
 import {Router} from "@angular/router";
 
 @Injectable({

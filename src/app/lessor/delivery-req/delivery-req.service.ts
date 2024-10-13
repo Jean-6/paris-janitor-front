@@ -1,12 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {forkJoin, from, map, mergeMap, Observable, of, toArray} from "rxjs";
+import {from, map, mergeMap, Observable, of, toArray} from "rxjs";
 import { DeliveryRequest} from "../../model/deliveryRequest";
 import {DeliveryReqSearchDto} from "../../dto/delivReqSearchDto";
-import {UserService} from "../../services/user.service";
-import {PropertyService} from "../../services/property.service";
 import {ApiUrls} from "../../.env";
-import {Property} from "../../model/property";
 import {DeliveryService} from "../../services/delivery.service";
 import {Delivery} from "../../model/delivery";
 
@@ -18,8 +15,7 @@ export class DeliveryReqService {
   public delivReqSearch: DeliveryReqSearchDto = new DeliveryReqSearchDto();
 
   constructor(private httpClient: HttpClient,
-              private deliveryService: DeliveryService,
-              private propertyService: PropertyService) {
+              private deliveryService: DeliveryService) {
   }
 
   saveDeliveryRequest(deliveryRequest: any): Observable<any> {

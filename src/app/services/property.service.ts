@@ -4,6 +4,7 @@ import { Observable} from "rxjs";
 import {PropertyDto} from "../dto/propertyDto";
 import {Property} from "../model/property";
 import {PropertySearchDto} from "../dto/propertySearchDto";
+import {ApiUrls} from "../.env";
 
 @Injectable({
   providedIn: 'root'
@@ -11,36 +12,32 @@ import {PropertySearchDto} from "../dto/propertySearchDto";
 export class PropertyService {
 
   public propertySearchDto: PropertySearchDto=new PropertySearchDto();
-  private userUrl = 'http://localhost:8081/api/user/';
-  private propertyUrl = 'http://localhost:8081/api/property';// URL pour les utilisateurs
 
-  constructor(private httpClient: HttpClient,
-              /*private errorHandler: ErrorHandlerService*/) { }
+  constructor(private httpClient: HttpClient) { }
 
   saveData(prop: PropertyDto):Observable<any>{
-    return this.httpClient.post<any>(`${this.propertyUrl}/`,prop);
-      /*.pipe( catchError((err:any) => {return throwError(err);}))*/
+    return this.httpClient.post<any>(`${ApiUrls.PROPERTY}/`,prop);
   }
 
-  getPropertyById(propId:String):Observable<any>{
-    return this.httpClient.get<any>(`${this.propertyUrl}/${propId}`);
+  getPropertyById(propId:String):Observable<Property>{
+    return this.httpClient.get<Property>(`${ApiUrls.PROPERTY}/${propId}`);
   }
 
-  getPropertiesPerPage():Observable<any>{
-    return this.httpClient.get<any>(`${this.propertyUrl}/page`);
+  getPropertiesPerPage():Observable<Property>{
+    return this.httpClient.get<Property>(`${ApiUrls.PROPERTY}/page`);
   }
 
   getPropertiesPerPage_():Observable<{ content: Property[],totalPages:number}>{
-    return this.httpClient.get<{content: Property[],totalPages: number}>(`${this.propertyUrl}/page`);
+    return this.httpClient.get<{content: Property[],totalPages: number}>(`${ApiUrls.PROPERTY}/page`);
   }
 
-  getProperties():Observable<any>{
-    return this.httpClient.get<any>(`${this.propertyUrl}/`);
+  getProperties():Observable<Property[]>{
+    return this.httpClient.get<Property[]>(`${ApiUrls.PROPERTY}/`);
   }
 
   // Méthode pour récupérer les propriétés d'un utilisateur
   getPropertiesByUserId(userId: string): Observable<Property[]> {
-    return this.httpClient.get<Property[]>(`${this.propertyUrl}?userId=${userId}`);
+    return this.httpClient.get<Property[]>(`${ApiUrls.PROPERTY}?userId=${userId}`);
   }
 
 }
