@@ -1,0 +1,165 @@
+<div class="d-flex flex-row" >
+  <div class="" style="width: 10%;margin-top: 10%;height:100% ">
+    <ul class="sidebar-links">
+      <h4>
+        <span></span>
+        <div class="menu-separator"></div>
+      </h4>
+      <li>
+        <a href="/admin/users">Utilisateurs</a>
+      </li>
+      <li>
+        <a href="/admin/ads">Annonces</a>
+      </li>
+
+
+      <!--<li>
+        <a href="/lessor/my-ads">Demandes</a>
+      </li>
+      <li>
+        <a href="/lessor/booking-list">Réservations</a>
+      </li>
+      <h4>
+        <span>Prestations</span>
+        <div class="menu-separator"></div>
+      </h4>
+      <li>
+        <a href="/lessor/delivery-request">Demandes</a>
+      </li>
+      <h4>
+        <span>Factures</span>
+        <div class="menu-separator"></div>
+      </h4>
+      <li>
+        <a href="/lessor/invoice">Liste</a>
+      </li>
+      <li>
+        <a href="#">Recap. Finances</a>
+      </li>
+      <h4>
+        <span>Compte</span>
+        <div class="menu-separator"></div>
+      </h4>-->
+      <li>
+        <!--<a href="#">Deconnexion</a>-->
+        <button (click)="onLogout()" class="btn btn-link">Deconnexion</button>
+      </li>
+    </ul>
+  </div>
+
+
+
+
+  <div class=" d-flex flex-column" style="width: 50%;margin-left: 12%;margin-top: 5%">
+
+    <div class="row title mt-4">
+      <h3>Liste des utilisateurs</h3>
+    </div>
+
+    <div class="row search-form mt-4">
+      <form  novalidate>
+        <div class="d-flex mb-2" >
+          <div class="form-group col-sm-6 ">
+            <label for="status" class="form-label">Status</label>
+            <select  id="status" class="form-select fs-6"  name="type" [(ngModel)]="userService.userResearchDto.status">
+              <option selected></option>
+              <option value="true">Actif</option>
+              <option value="false">Inactif</option>
+            </select>
+          </div>
+
+          <div  class=" form-group col-sm-6 mx-2" >
+            <label for="email" class="form-label">Email</label>
+            <input id="email" type="text" class="form-control" placeholder="" name="email" [(ngModel)]="userService.userResearchDto.email"  >
+          </div>
+        </div>
+
+        <div class="d-flex mb-2" >
+          <div class="form-group col-sm-6 ">
+            <label for="username" class="form-label">Pseudo</label>
+            <input id="username" type="text" class="form-control" placeholder="" name="username" [(ngModel)]="userService.userResearchDto.username" >
+
+          </div>
+
+          <div  class=" form-group col-sm-6 mx-2" >
+            <label for="role" class="form-label">Role</label>
+            <select  id="role" class="form-select fs-6"  name="role" [(ngModel)]="userService.userResearchDto.role">
+              <option selected></option>
+              <option value="PROVIDER">Fournisseur</option>
+              <option value="LESSOR">Bailleur</option>
+              <option value="TRAVELER">Voyageur</option>
+              <option value="ADMIN">Administrateur</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group col-sm-6 mt-3">
+          <button type="submit" (click)="userService.launchUserSearch()" class="btn btn-primary mb-3 btn-sm">Rechercher</button>
+        </div>
+      </form>
+    </div>
+
+
+
+    <div class=" row py-4">
+
+      <div *ngIf="!this.userService.isLoadingUser" class="center-spinner">
+        <div class="spinner-border text-primary" role="status" style="width: 10rem; height: 10rem">
+          <!--<span class="sr-only">Paris Janitor</span>-->
+        </div>
+      </div>
+
+
+      <div *ngIf="this.userService.isLoadingUser && this.userService.users.length>0" class="py-1">
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th scope="col">Pseudo</th>
+            <th scope="col">Email</th>
+            <th scope="col">Status</th>
+            <th scope="col">Role</th>
+            <th scope="col">Date de création</th>
+            <th scope="col">Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let user of this.userService.users">
+            <td>{{user.profile?.username}}</td>
+            <td>{{user.profile?.email}}</td>
+
+            <td [ngSwitch]="user.active">
+              <span *ngSwitchCase="true">Actif</span>
+              <span *ngSwitchCase="false" >Inactif</span>
+            </td>
+
+            <td [ngSwitch]="user.roles">
+              <span *ngSwitchCase="'ADMIN'">Administrateur</span>
+              <span *ngSwitchCase="'PROVIDER'">Fournisseur</span>
+              <span *ngSwitchCase="'LESSOR'">Bailleur</span>
+              <span *ngSwitchCase="'TRAVELER'">Voyageurs</span>
+            </td>
+
+
+            <td>{{user.createdAt | date :'dd-MM-yyy HH:MM' }}</td>
+            <td>
+              <a style="text-decoration:none"  [routerLink]="['/admin-user-details',user.id]" >Visualiser</a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+        <div class="row py-3">
+          <div class="col">Pagination</div>
+        </div>
+      </div>
+
+      <div *ngIf="this.userService.isLoadingUser && this.userService.users.length==0" class="py-4">
+        Aucun utilisateur trouvé
+      </div>
+
+    </div>
+
+
+
+  </div>
+</div>
+
