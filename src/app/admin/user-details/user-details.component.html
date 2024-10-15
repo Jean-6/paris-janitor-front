@@ -1,0 +1,90 @@
+<div class="d-flex flex-row" >
+  <div class="" style="width: 10%;margin-top: 10%;height:100% ">
+    <ul class="sidebar-links">
+      <h4>
+        <span></span>
+        <div class="menu-separator"></div>
+      </h4>
+      <li>
+        <a href="/admin/users">Utilisateurs</a>
+      </li>
+      <li>
+        <a href="/admin/ads">Annonces</a>
+      </li>
+      <li>
+        <button (click)="onLogout()" class="btn btn-link">Deconnexion</button>
+      </li>
+    </ul>
+  </div>
+
+
+
+
+  <div class=" d-flex flex-column" style="width: 50%;margin-left: 12%;margin-top: 5%">
+    <a [routerLink]="['/admin/users']">Retour</a>
+
+    <div class="row title mt-4">
+      <h3>Informations utilisateurs</h3>
+    </div>
+
+
+    <div *ngIf="this.loadingUser" class="center-spinner">
+      <div class="spinner-border text-primary" role="status" style="width: 10rem; height: 10rem">
+        <!--<span class="sr-only">Paris Janitor</span>-->
+      </div>
+    </div>
+
+
+    <div *ngIf="!this.loadingUser " class="row">
+
+     <div class="row">
+        <div class="col"><p>Pseudo : {{this.user.profile?.username}}</p></div>
+        <div class="col"><p>Email : {{this.user.profile?.email}} </p></div>
+      </div>
+
+      <div class="row">
+        <div class="col"><p>Date d'inscription : {{this.user.createdAt | date: 'dd-MM-yyyy'}}</p></div>
+        <div class="col"><p>Heure : {{this.user.createdAt | date :'HH:MM'}} </p></div>
+      </div>
+
+      <div class="row">
+        <h5>Statut</h5>
+        <div class="col"  [ngSwitch]="this.user.active">
+          <span *ngSwitchCase=true>Actif</span>
+          <span *ngSwitchCase=false>Inactif</span>
+        </div>
+      </div>
+
+      <div class="row py-3">
+        <h5>Role </h5>
+        <div class="col" [ngSwitch]="this.user.roles">
+          <span *ngSwitchCase="'LESSOR'">Bailleur</span>
+          <span *ngSwitchCase="'PROVIDER'">Fournisseur</span>
+          <span *ngSwitchCase="'TRAVELER'">Voyageur</span>
+          <span *ngSwitchCase="'ADMIN'">Administrateur</span>
+          <span></span>
+
+        </div>
+      </div>
+
+      <div class="row py-3">
+        <h5>Date de création </h5>
+        <div class="col" >
+          {{this.user.createdAt | date: 'dd-MM-YYYY  HH:MM:ss'}}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="d-flex flex-row" *ngIf="!this.loadingUser">
+      <div >
+        <button class="btn btn-sm " (click)="status(userId);refreshData()" [ngClass]="this.user.active==true ? 'btn-disabled':'btn-enabled'"> Activer Compte</button>
+      </div>
+      <div class="mx-4">
+        <button class="btn btn-sm " (click)="status(userId);refreshData()" [ngClass]="this.user.active==false ? 'btn-disabled':'btn-enabled'">Desactiver Compte</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
