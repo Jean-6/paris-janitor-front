@@ -1,0 +1,105 @@
+
+
+<div class="d-flex flex-row" >
+  <div class="" style="width: 10%;margin-top: 10%;height:100% ">
+    <ul class="sidebar-links">
+      <h4>
+        <span></span>
+        <div class="menu-separator"></div>
+      </h4>
+      <li>
+        <a href="/admin/users">Utilisateurs</a>
+      </li>
+      <li>
+        <a href="/admin/ads">Annonces</a>
+      </li>
+      <li>
+        <button (click)="onLogout()" class="btn btn-link">Deconnexion</button>
+      </li>
+    </ul>
+
+  </div>
+
+
+  <div class=" d-flex flex-column" style="width: 50%;margin-left: 12%;margin-top: 5%">
+    <div class="row title mt-4">
+      <h3>Les annonces du moment</h3>
+    </div>
+
+    <div class="row search-form mt-4">
+      <form  novalidate>
+        <div class="d-flex mb-2" >
+          <div class="form-group col-sm-6 ">
+            <label for="type" class="form-label">Type</label>
+            <select  id="type" class="form-select fs-6" [(ngModel)]="propertyService.propertySearchDto.type" name="type">
+              <option selected></option>
+              <option value="Apart">Appartement</option>
+              <option value="Home">Maison</option>
+              <option value="Studio">Studio</option>
+            </select>
+          </div>
+
+          <div  class=" form-group col-sm-6 mx-2" >
+            <label for="location" class="form-label">Localisation</label>
+            <input id="location" type="text" class="form-control" placeholder="Ville, région, code postal" [(ngModel)]="propertyService.propertySearchDto.location" name="location" >
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <div class="form-group">
+            <label  for="minBudget">Budget minimum</label>
+            <input type="text" id="minBudget" class="form-control" placeholder="Budget Min." [(ngModel)]="propertyService.propertySearchDto.minBudget" name="minBudget"/>
+          </div>
+          <div class="form-group mx-2">
+            <label for="maxBudget">Budget maximum</label>
+            <input type="text" id="maxBudget" class="form-control" placeholder="Budget Max." [(ngModel)]="propertyService.propertySearchDto.maxBudget" name="maxBudget"/>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6 mt-3">
+          <button type="submit" (click)="propertyService.launchPropertySearch()" class="btn btn-primary mb-3 btn-sm">Rechercher</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="row">
+      <div *ngIf="!isLoadingProperties" class="center-spinner">
+        <div class="spinner-border text-primary" role="status" style="width: 10rem; height: 10rem">
+          <span class="sr-only">Paris Janitor</span>
+        </div>
+      </div>
+
+      <div  *ngIf="isLoadingProperties && this.properties.length > 0" class="mt-4 grid-container"  >
+        <div class="grid-box " *ngFor="let property of this.properties">
+
+          <a style="text-decoration:none"  [routerLink]="['/admin-property-details',property.id]" >
+            <div class="card" style="width: 14rem">
+              <img class="card-img-top" height="180" width="100" src="../../../assets/5551029-logo-immobilier.jpg" alt="card img cap">
+              <div class="card-body">
+
+                <div class="d-flex flex-row justify-content-between">
+                  <div class="card-title">{{ property.type }}</div>
+                  <div>{{this.property.area}} m2</div>
+                </div>
+
+                <div class="d-flex flex-column">
+                  <div>{{this.property.rent | currency: 'EUR'}} </div>
+                </div>
+                <p class="card-text">{{ property.description }}</p>
+                <a href="#" class="btn btn-primary btn-sm">Details</a>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isLoadingProperties && this.properties.length === 0" class="row">
+      Aucune annonce sur la plateforme.
+    </div>
+    <div *ngIf="isLoadingProperties && this.properties.length > 0" class="row py-4">
+      <div class="col">Pagination</div>
+    </div>
+  </div>
+</div>

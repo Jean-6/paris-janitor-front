@@ -1,0 +1,17 @@
+/* Class pour un bouton activé */
+.btn-enabled {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+/* Class pour un bouton désactivé */
+.btn-disabled {
+  background-color: #cccccc;
+  color: #666666;
+  border: none;
+  padding: 10px 20px;
+  cursor: not-allowed;
+}

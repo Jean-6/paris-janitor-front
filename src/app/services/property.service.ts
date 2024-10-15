@@ -6,6 +6,7 @@ import {Property} from "../model/property";
 import {PropertySearchDto} from "../dto/propertySearchDto";
 import {ApiUrls} from "../.env";
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -38,6 +39,10 @@ export class PropertyService {
   // Méthode pour récupérer les propriétés d'un utilisateur
   getPropertiesByUserId(userId: string): Observable<Property[]> {
     return this.httpClient.get<Property[]>(`${ApiUrls.PROPERTY}?userId=${userId}`);
+  }
+
+  launchPropertySearch():Observable<Property[]>{
+    return this.httpClient.get<Property[]>(`${ApiUrls.PROPERTY}?propertySearchDto=${this.propertySearchDto}`);
   }
 
 }

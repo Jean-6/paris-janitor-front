@@ -1,0 +1,128 @@
+
+
+<div class="d-flex flex-row" >
+  <div class="" style="width: 10%;margin-top: 10%;height:100% ">
+    <ul class="sidebar-links">
+      <h4>
+        <span></span>
+        <div class="menu-separator"></div>
+      </h4>
+      <li>
+        <a href="/admin/users">Utilisateurs</a>
+      </li>
+      <li>
+        <a href="/admin/ads">Annonces</a>
+      </li>
+
+
+      <!--<li>
+        <a href="/lessor/my-ads">Demandes</a>
+      </li>
+      <li>
+        <a href="/lessor/booking-list">Réservations</a>
+      </li>
+      <h4>
+        <span>Prestations</span>
+        <div class="menu-separator"></div>
+      </h4>
+      <li>
+        <a href="/lessor/delivery-request">Demandes</a>
+      </li>
+      <h4>
+        <span>Factures</span>
+        <div class="menu-separator"></div>
+      </h4>
+      <li>
+        <a href="/lessor/invoice">Liste</a>
+      </li>
+      <li>
+        <a href="#">Recap. Finances</a>
+      </li>
+      <h4>
+        <span>Compte</span>
+        <div class="menu-separator"></div>
+      </h4>-->
+      <li>
+        <!--<a href="#">Deconnexion</a>-->
+        <button (click)="onLogout()" class="btn btn-link">Deconnexion</button>
+      </li>
+    </ul>
+
+  </div>
+
+
+  <div class=" d-flex flex-column" style="width: 50%;margin-left: 12%;margin-top: 5%">
+
+
+    <div class="row">
+      <div class="col"><a href="/lessor">Retour</a></div>
+    </div>
+
+    <div class="row py-4">
+
+      <div *ngIf="this.loadingProperty" class="center-spinner">
+        <div class="spinner-border text-primary" role="status" style="width: 5rem; height: 5rem">
+          <span class="sr-only">Paris Janitor</span>
+        </div>
+      </div>
+
+      <div *ngIf="!this.loadingProperty && this.propertyDetails" class="row">
+        <h3>Details</h3>
+
+
+        <div class="row">
+          <div class="col"><p>Type de bien : {{this.propertyDetails.type}}</p></div>
+          <div class="col"><p>Loyer : {{this.propertyDetails.rent | currency: 'EUR'}} </p></div>
+        </div>
+
+        <div class="row">
+          <div class="col"><p>Nombre de pieces : {{this.propertyDetails.pieces}}</p></div>
+          <div class="col"><p>Surface : {{this.propertyDetails.area | number}} m2</p></div>
+        </div>
+
+        <div class="row">
+          <h5>Description </h5>
+          <div class="col">{{this.propertyDetails.description}}</div>
+        </div>
+
+        <div class="row py-3">
+          <h5>Contact </h5>
+          <div class="col">Tel : {{this.propertyDetails.tel}}</div>
+        </div>
+
+        <div class="row py-3">
+          <h5>Status </h5>
+          <div class="col" [ngSwitch]="propertyDetails.status" >
+            <span *ngSwitchCase="'PENDING'">En attente de validation</span>
+            <span *ngSwitchCase="'VALIDATED'">En ligne</span>
+          </div>
+        </div>
+
+        <div class="row py-3">
+          <h5>Date de création </h5>
+          <div class="col" >
+            {{this.propertyDetails.createdAt | date: 'dd-MM-YYYY  HH:MM:ss'}}
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div *ngIf="this.loadingProperty" class="center-spinner">
+      <div class="spinner-border text-primary" role="status" style="width: 5rem; height: 5rem">
+        <span class="sr-only">Paris Janitor</span>
+      </div>
+    </div>
+
+   <div class="d-flex flex-row" *ngIf="!this.loadingProperty">
+      <div>
+        <button class="btn btn-sm " (click)="activateStatus();refreshData()" [ngClass]="this.propertyDetails.status?.toString() == 'PENDING' ? 'btn-enabled':'btn-disabled'"> Activer Compte</button>
+      </div>
+      <div class="mx-4">
+        <button class="btn btn-sm " (click)="activateStatus();refreshData()" [ngClass]="this.propertyDetails.status?.toString() == 'VALIDATED' ? 'btn-enabled':'btn-disabled'">Desactiver Compte</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>

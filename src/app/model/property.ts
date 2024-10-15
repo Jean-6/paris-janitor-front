@@ -1,3 +1,5 @@
+import {PropertyStatus} from "./propertyStatus";
+
 export class Property {
   constructor(
     public id?:string,
@@ -12,6 +14,8 @@ export class Property {
       zip?:string
     },
     public tel?:string,
-    public userId?:string
+    public userId?:string,
+    public status?: PropertyStatus,
+    public createdAt?:Date
   ) { }
 }
