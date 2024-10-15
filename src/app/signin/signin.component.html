@@ -1,5 +1,5 @@
 
-<!--<div class="spinner-border"></div>-->
+
 
 
 <div class=" container center-div ">
@@ -10,10 +10,10 @@
 <div class="container center-div mt-4 mb-5">
   <form [formGroup]="signinForm">
     <div class=" form-group col-sm-2 mb-2">
-      <label for="pseudo" class="form-label">Pseudo</label>
-      <input id="pseudo" type="text" placeholder="Username" formControlName="username" class="form-control form-control-sm"/>
-      <div class="form-error-message" *ngIf="this.signinForm.get('username')?.touched && (this.signinForm.get('username')?.errors || this.signinForm.get('username')?.invalid )">
-        <span>Entrer un login</span>
+      <label for="email" class="form-label">Email</label>
+      <input id="email" type="text" placeholder="email" formControlName="email" class="form-control form-control-sm"/>
+      <div class="form-error-message" *ngIf="this.signinForm.get('email')?.touched && (this.signinForm.get('email')?.errors || this.signinForm.get('email')?.invalid )">
+        <span>Entrer un email valide</span>
       </div>
     </div>
 
@@ -36,7 +36,13 @@
 </div>
 
 <div>
-  <a class="link text-decoration-none" href="/lessor">Compte bailleurs</a> |
-  <a class="link text-decoration-none" href="/providers">Compte Fournisseurs</a> |
-  <a class="link text-decoration-none" href="/travelers">Compte voyageurs</a>
+  <a class="link text-decoration-none" routerLink ="/lessor" >Compte bailleurs</a> |
+  <a class="link text-decoration-none" href="/provider">Compte Fournisseurs</a> |
+  <a class="link text-decoration-none" href="/traveler">Compte voyageurs</a> |
+  <a class="link text-decoration-none" href="/admin">admin</a>
 </div>
+
+
+
+
+
