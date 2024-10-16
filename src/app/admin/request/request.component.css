@@ -1,0 +1,7 @@
+/* styles.css */
+.button-disabled {
+  background-color: #ccc; /* Couleur de fond gris pour le bouton désactivé */
+  color: #666;            /* Couleur du texte gris */
+  cursor: not-allowed;    /* Curseur non autorisé */
+  pointer-events: none;   /* Désactiver les événements du curseur */
+}

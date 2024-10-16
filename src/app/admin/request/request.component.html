@@ -1,0 +1,103 @@
+
+
+<div class="d-flex flex-row" >
+  <div class="" style="width: 15%;margin-top: 15%;height:100% ">
+    <ul class="sidebar-links">
+      <h4>
+        <span></span>
+        <div class="menu-separator"></div>
+      </h4>
+      <li>
+        <a href="/admin/users">Utilisateurs</a>
+      </li>
+      <li>
+        <a href="/admin/ads">Annonces</a>
+      </li>
+      <li>
+        <a href="/admin/delivery-request">Prestations</a>
+      </li>
+      <li>
+        <button (click)="onLogout()" class="btn btn-link">Deconnexion</button>
+      </li>
+    </ul>
+
+  </div>
+
+
+  <div class=" d-flex flex-column" style="width: 70%;margin-left: 7%;margin-top: 5%">
+
+    <!--<a [routerLink]="['/admin/users']">Retour</a>-->
+
+    <div class="row title mt-4">
+      <h3>Demande de prestations</h3>
+    </div>
+
+
+    <div *ngIf="!this.loadingData" class="center-spinner">
+      <div class="spinner-border text-primary" role="status" style="width: 10rem; height: 10rem">
+        <!--<span class="sr-only">Paris Janitor</span>-->
+      </div>
+    </div>
+
+
+    <div *ngIf="this.loadingData && this.deliveriesRequest.length>0" class="py-4">
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th scope="col">Type</th>
+          <th scope="col">Description</th>
+          <th scope="col">Status</th>
+          <th scope="col">Date de création</th>
+          <th scope="col">Action</th>
+          <th scope="col">Attribution</th>
+        </tr>
+        </thead>
+        <tbody>
+
+
+        <tr *ngFor="let request of this.deliveriesRequest">
+
+
+          <td>{{request.type}}</td>
+          <td>{{request.description}}</td>
+          <td [ngSwitch]="request.stage[request.stage.length - 1].status">
+            <span *ngSwitchCase="'PENDING'">En attente</span>
+            <span *ngSwitchCase="'IN_PROGRESS'">En cours</span>
+            <span *ngSwitchCase="'COMPLETED'">Terminé</span>
+          </td>
+          <td>{{request.createdAt  }}</td>
+          <td>
+            <a style="text-decoration:none"  [routerLink]="['/admin-property-details',request.propertyId]" >Visualiser</a>
+          </td>
+
+          <td>
+            <form [formGroup]="assignRequestForm">
+              <div class="d-flex " >
+                <div class="form-group col-sm-6 mx-2">
+                  <input   type="hidden" formControlName="requestId" value="{{request.id}}"/>
+                  <select id="type" class="form-select  form-select-sm fs-6" formControlName="providerId" >
+                    <option  ></option>
+                    <option *ngFor="let provider of this.providers" value="{{provider.id}}" >{{provider.profile?.username}}</option>
+                  </select>
+                </div>
+                <div class="form-group col-sm-6 ">
+                  <button  [ngClass]="{'button-disabled':request.providerId?.length!==null}" type="submit" (click)="this.assignRequest(request.id!);refreshData()" class="btn btn-primary btn-sm">Valider</button>
+                </div>
+              </div>
+            </form>
+          </td>
+
+        </tr>
+
+        </tbody>
+      </table>
+
+    </div>
+
+    <div *ngIf="this.loadingData && this.deliveriesRequest.length==0" class="py-4">
+      Aucune demande trouvée
+    </div>
+  </div>
+
+
+</div>
