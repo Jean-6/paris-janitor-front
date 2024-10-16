@@ -11,14 +11,16 @@ import {ImageService} from "../services/image.service";
 import {UserService} from "../services/user.service";
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { PropertyDetailsComponent } from './property-details/property-details.component';
+import { RequestComponent } from './request/request.component';
 
 
 
 export const adminRoutes: Routes = [
-  { path: 'admin-property-details/:id', component: PropertyDetailsComponent, children: [] },
-  { path: 'admin-user-details/:id', component: UserDetailsComponent, children: [] },
-  { path: 'admin/users', component: UserComponent, children: [] },
-  { path: 'admin/ads', component: PropertyComponent, children: [] },
+  { path: 'admin-property-details/:id', component: PropertyDetailsComponent},
+  { path: 'admin-user-details/:id', component: UserDetailsComponent },
+  { path: 'admin/delivery-request', component: RequestComponent },
+  { path: 'admin/users', component: UserComponent },
+  { path: 'admin/ads', component: PropertyComponent},
   { path: 'admin', redirectTo: 'admin/ads', pathMatch: 'prefix' },
 ];
 
@@ -27,7 +29,8 @@ export const adminRoutes: Routes = [
     UserComponent,
     PropertyComponent,
     UserDetailsComponent,
-    PropertyDetailsComponent
+    PropertyDetailsComponent,
+    RequestComponent
   ],
   imports: [
     CommonModule, RouterModule.forChild(adminRoutes), FormsModule,

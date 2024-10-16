@@ -18,7 +18,6 @@ import {TravelersModule} from "./travelers/travelers.module";
 import {LessorModule} from "./lessor/lessor.module";
 import {PropertyService} from "./services/property.service";
 import {ImageService} from "./services/image.service";
-
 import {AdminModule} from "./admin/admin.module";
 
 registerLocaleData(localeFr, 'fr-FR'); // Enregistrer les données pour la locale 'fr-FR'
@@ -44,6 +43,7 @@ registerLocaleData(localeFr, 'fr-FR'); // Enregistrer les données pour la local
     TravelersModule,
     LessorModule,
     AdminModule
+
   ],
   providers: [
     SigninService,
